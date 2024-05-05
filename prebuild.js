@@ -1,21 +1,17 @@
 const path = require('path');
 const fs = require('fs');
-
+const rimraf = require('rimraf');
 const distPath = path.join(__dirname, 'dist');
 
 const prebuild = async () => {
     if (fs.existsSync(distPath)) {
-        fs.rm(distPath, { recursive: true }, (err) => {
-            if (err) {
-                console.error(err);
-            } else {
-                console.log("Clean up dist folder successfully!")
-            }
-        });
-
-    } else {
-        console.log("Clean up dist folder successfully!")
+        try {
+            rimraf.sync(distPath)
+            console.log('Deleted dist folder')
+        } catch (error) {
+            console.error('Error deleting dist folder: ', error)
+        }
     }
 }
 
-prebuild();
+prebuild()
